@@ -18,11 +18,18 @@ return new class extends Migration
             $table->string('name');
             $table->boolean('is_vegetarian');
             $table->unsignedBigInteger('chef_user_id');
+            $table->unsignedBigInteger('flight_id');
             $table->timestamps();
 
             $table->foreign('chef_user_id')
                 ->references('id')
                 ->on('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+            $table->foreign('flight_id')
+                ->references('id')
+                ->on('flights')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
         });
