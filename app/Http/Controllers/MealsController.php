@@ -42,14 +42,14 @@ class MealsController extends Controller
 
     public function indexVegetarian(bool $vegetarian)
     {
-        $meals = Meal::where('is_vegetarian', '=', $vegetarian);
+        return Meal::where('is_vegetarian', '=', $vegetarian)->get();
 
-        $food='Vegetarian';
-        if($vegetarian==false){
-            $food='Non Vegetarian';
-        }
-
-        return response("Showing all the $food meals", 200);
+//        $food = 'Vegetarian';
+//        if ($vegetarian == false) {
+//            $food = 'Non Vegetarian';
+//    }
+//
+//return response("Showing all the $food meals", 200);
 
     }
 
@@ -62,16 +62,16 @@ class MealsController extends Controller
 //    }
 
 
-
-
-    public function show($id)
+    public
+    function show($id)
     {
         $meal = Meal::find($id);
 
         return response('Showing Specific Meal', 200);
     }
 
-    public function destroy(int $id)
+    public
+    function destroy(int $id)
     {
         $meal = Meal::find($id);
         $meal->delete();
@@ -79,7 +79,8 @@ class MealsController extends Controller
         return response('Meal deleted', 204);
     }
 
-    private function parseToBool(mixed $input)
+    private
+    function parseToBool(mixed $input)
     {
         return filter_var($input, FILTER_VALIDATE_BOOL);
     }

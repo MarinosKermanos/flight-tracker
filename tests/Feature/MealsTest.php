@@ -7,12 +7,18 @@ use App\Models\Airport;
 use App\Models\Flight;
 use App\Models\Meal;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\Concerns\CanBeOneOfMany;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class MealsTest extends TestCase
 {
+    use DatabaseMigrations;
+
     public function test_it_does_not_create_a_meal_if_name_is_less_than_5_chars()
     {
         $user = User::factory()->create();
@@ -126,10 +132,14 @@ class MealsTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $airport = Airport::create([
+        $fromAirport = Airport::create([
             'city' => 'sotira',
             'code' => 'sotira',
+        ]);
 
+        $toAirport = Airport::create([
+            'city' => 'liopetri',
+            'code' => 'liopetri',
         ]);
 
         $airplane = Airplane::create([
@@ -140,46 +150,77 @@ class MealsTest extends TestCase
         $flight = Flight::create([
 
             'airplane_id' => $airplane->id,
-            'From' => 1,
-            'To' => 2,
+            'From' => $fromAirport->id,
+            'To' => $toAirport->id,
             'departure' => now(),
             'arrival' => now(),
             'expected_duration' => 10,
             'actual_duration' => 11,
         ]);
 
-        $meal = Meal::create([
-            'chef_user_id' => $user->id,
-            'name' => 'steak',
-            'is_vegetarian' => false,
-            'flight_id' => $flight->id,
-        ]);
+//        $steak = Meal::create([
+//            'chef_user_id' => $user->id,
+//            'name' => 'steak',
+//            'is_vegetarian' => false,
+//            'flight_id' => $flight->id,
+//        ]);
 
-        $meal = Meal::create([
-            'chef_user_id' => $user->id,
-            'name' => 'glitzia',
-            'is_vegetarian' => false,
-            'flight_id' => $flight->id,
-        ]);
+//        $glitzia = Meal::create([
+//            'chef_user_id' => $user->id,
+//            'name' => 'glitzia',
+//            'is_vegetarian' => false,
+//            'flight_id' => $flight->id,
+//        ]);
 
-        $meal = Meal::create([
-            'chef_user_id' => $user->id,
-            'name' => 'poulles',
-            'is_vegetarian' => true,
-            'flight_id' => $flight->id,
-        ]);
+//        $poulles = Meal::create([
+//            'chef_user_id' => $user->id,
+//            'name' => 'poulles',
+//            'is_vegetarian' => true,
+//            'flight_id' => $flight->id,
+//        ]);
+//
+//
+//        $aggourka = Meal::create([
+//            'chef_user_id' => $user->id,
+//            'name' => 'aggourka',
+//            'is_vegetarian' => true,
+//            'flight_id' => $flight->id,
+//        ]);
 
-
-        $meal = Meal::create([
-            'chef_user_id' => $user->id,
-            'name' => 'aggourka',
-            'is_vegetarian' => true,
-            'flight_id' => $flight->id,
+        DB::table('meals')->insert([
+            [
+                'chef_user_id' => $user->id,
+                'name' => 'poulles',
+                'is_vegetarian' => true,
+                'flight_id' => $flight->id,
+            ],
+            [
+                'chef_user_id' => $user->id,
+                'name' => 'aggourka',
+                'is_vegetarian' => true,
+                'flight_id' => $flight->id,
+            ],
+            [
+                'chef_user_id' => $user->id,
+                'name' => 'steak',
+                'is_vegetarian' => false,
+                'flight_id' => $flight->id,
+            ],
+            [
+                'chef_user_id' => $user->id,
+                'name' => 'glitzia',
+                'is_vegetarian' => false,
+                'flight_id' => $flight->id,
+            ]
         ]);
 
         $vegetarian = true;
         $response = $this->get("all-veg/$vegetarian");
         $response->assertStatus(200);
+//        $response->assertJson(function ($json){
+//            return $json->count($json);
+//        });
+
 
     }
 

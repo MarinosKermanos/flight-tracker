@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreAirport;
 use App\Models\Airport;
 use Illuminate\Http\Request;
 
 class AirportsController extends Controller
 {
-    public function store(Request $request)
+    public function store(StoreAirport $request)
     {
         Airport::create([
             'city' => $request->validated('city'),
