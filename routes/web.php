@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FlightsController;
 use App\Http\Controllers\MealsController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +27,11 @@ Route::post('meals-update/{id}', [MealsController::class, 'update']);
 Route::post('meals-delete/{id}', [MealsController::class, 'destroy']);
 
 
+Route::get('all', [FlightsController::class, 'index']);
+Route::get('flights-show/{id}', [FlightsController::class, 'show']);
+Route::post('flights', [FlightsController::class, 'store']);
+Route::post('flights-update/{id}', [FlightsController::class, 'update']);
+Route::post('flights-delete/{id}', [FlightsController::class, 'destroy']);
 
 // Below are just notes so that you don't have to  go to the documentation to avoid overwhelming you with too much info.
 // They are not to-do's. Just notes.

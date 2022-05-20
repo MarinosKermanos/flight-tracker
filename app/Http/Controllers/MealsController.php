@@ -14,6 +14,7 @@ class MealsController extends Controller
             'chef_user_id' => $request->validated('chef_user_id'),
             'name' => $request->validated('name'),
             'is_vegetarian' => $this->parseToBool($request->validated('is_vegetarian')),
+            'flight_id' => $request->validated('flight_id'),
         ]);
         return response('Meal created', 201);
     }
@@ -22,7 +23,6 @@ class MealsController extends Controller
     {// create a form request UpdateMeal
         //ta data tha einai required sometimes mesa sto rule method
         //an to meal_id pou stelnw iparxi pragmati sto db mas, after validation method documetation
-        //
 
         Meal::where('id', '=', $id)
             ->update([
@@ -37,14 +37,14 @@ class MealsController extends Controller
     {
         $meals = Meal::all();
 
-        // return response('Showing all the meals', 201);
+        return response('Showing all the meals', 200);
     }
 
     public function show($id)
     {
         $meal = Meal::find($id);
 
-        //  return response('Showing Specific Meal', 201);
+        return response('Showing Specific Meal', 200);
     }
 
     public function destroy(int $id)
