@@ -44,16 +44,22 @@ class MealsController extends Controller
     {
         $meals = Meal::where('is_vegetarian', '=', $vegetarian);
 
-        return response('Showing all the meals', 200);
+        $food='Vegetarian';
+        if($vegetarian==false){
+            $food='Non Vegetarian';
+        }
+
+        return response("Showing all the $food meals", 200);
 
     }
-    public function indexNonVegetarian(bool $vegetarian)
-    {
-        $meals = Meal::where('is_vegetarian', '=', $vegetarian);
 
-        return response('Showing all the meals', 200);
-
-    }
+//    public function indexNonVegetarian(bool $vegetarian)
+//    {
+//        $meals = Meal::where('is_vegetarian', '=', $vegetarian);
+//
+//        return response('Showing all the Non Vegetarian meals', 200);
+//
+//    }
 
 
 
