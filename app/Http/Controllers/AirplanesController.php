@@ -1,13 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Requests\StoreAirplane;
 use App\Models\Airplane;
 use Illuminate\Http\Request;
 class AirplanesController extends Controller
 {
-    public function store(Request $request)
+    public function store(StoreAirplane $request)
     {
-        Airplane::create([
+        $airplane=Airplane::create([
             'model' => $request->validated('model'),
             'maker' => $request->validated('maker'),
 
