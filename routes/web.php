@@ -27,6 +27,11 @@ Route::get('meals-show/{id}', [MealsController::class, 'show']);
 Route::post('meals', [MealsController::class, 'store']);
 Route::post('meals-update/{id}', [MealsController::class, 'update']);
 Route::post('meals-delete/{id}', [MealsController::class, 'destroy']);
+Route::get('all/{is_vegetarian}', [MealsController::class, 'indexVegetarian']);
+Route::get('all/{is_vegetarian}', [MealsController::class, 'indexNonVegetarian']);
+
+
+
 
 //Flights
 Route::get('all', [FlightsController::class, 'index']);

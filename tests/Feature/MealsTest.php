@@ -33,6 +33,7 @@ class MealsTest extends TestCase
     }
 
     public function test_it_creates_a_meal()
+
     {
         $user = User::factory()->create();
 
@@ -101,7 +102,7 @@ class MealsTest extends TestCase
 
         $meal = Meal::create([
             'chef_user_id' => $user->id,
-            'name' => $user->name,
+            'name' => 'pattixa',
             'is_vegetarian' => true,
             'flight_id' => $flight->id,
         ]);
@@ -118,6 +119,131 @@ class MealsTest extends TestCase
         ]);
 
     }
+
+    public function test_get_all_vegetarian_meals()
+    {
+        $user = User::factory()->create();
+
+        $airport = Airport::create([
+            'city' => 'sotira',
+            'code' => 'sotira',
+
+        ]);
+
+        $airplane = Airplane::create([
+            'model' => 'a320',
+            'maker' => 'airbus',
+        ]);
+
+        $flight = Flight::create([
+
+            'airplane_id' => $airplane->id,
+            'From' => 1,
+            'To' => 2,
+            'departure' => now(),
+            'arrival' => now(),
+            'expected_duration' => 10,
+            'actual_duration' => 11,
+        ]);
+
+        $meal = Meal::create([
+            'chef_user_id' => $user->id,
+            'name' => 'steak',
+            'is_vegetarian' => false,
+            'flight_id' => $flight->id,
+        ]);
+
+        $meal = Meal::create([
+            'chef_user_id' => $user->id,
+            'name' => 'glitzia',
+            'is_vegetarian' => false,
+            'flight_id' => $flight->id,
+        ]);
+
+        $meal = Meal::create([
+            'chef_user_id' => $user->id,
+            'name' => 'poulles',
+            'is_vegetarian' => true,
+            'flight_id' => $flight->id,
+        ]);
+
+
+        $meal = Meal::create([
+                'chef_user_id' => $user->id,
+                'name' => 'aggourka',
+                'is_vegetarian' => true,
+                'flight_id' => $flight->id,
+        ]);
+
+        $vegetarian = true;
+        //$response = $this->post("meals-update/$meal->id", $dataToUpdate);
+        $response = $this->get("all/$vegetarian");
+        $response->assertStatus(200);
+
+    }
+
+    public function test_get_all_non_vegetarian_meals()
+    {
+        $user = User::factory()->create();
+
+        $airport = Airport::create([
+            'city' => 'sotira',
+            'code' => 'sotira',
+
+        ]);
+
+        $airplane = Airplane::create([
+            'model' => 'a320',
+            'maker' => 'airbus',
+        ]);
+
+        $flight = Flight::create([
+
+            'airplane_id' => $airplane->id,
+            'From' => 1,
+            'To' => 2,
+            'departure' => now(),
+            'arrival' => now(),
+            'expected_duration' => 10,
+            'actual_duration' => 11,
+        ]);
+
+        $meal = Meal::create([
+            'chef_user_id' => $user->id,
+            'name' => 'steak',
+            'is_vegetarian' => false,
+            'flight_id' => $flight->id,
+        ]);
+
+        $meal = Meal::create([
+            'chef_user_id' => $user->id,
+            'name' => 'glitzia',
+            'is_vegetarian' => false,
+            'flight_id' => $flight->id,
+        ]);
+
+        $meal = Meal::create([
+            'chef_user_id' => $user->id,
+            'name' => 'poulles',
+            'is_vegetarian' => true,
+            'flight_id' => $flight->id,
+        ]);
+
+
+        $meal = Meal::create([
+            'chef_user_id' => $user->id,
+            'name' => 'aggourka',
+            'is_vegetarian' => true,
+            'flight_id' => $flight->id,
+        ]);
+
+        $vegetarian = false;
+        //$response = $this->post("meals-update/$meal->id", $dataToUpdate);
+        $response = $this->get("all/$vegetarian");
+        $response->assertStatus(200);
+
+    }
+
 
     public function test_it_deletes_a_meal()
     {

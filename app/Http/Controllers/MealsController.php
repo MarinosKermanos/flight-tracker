@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreMeal;
 use App\Models\Meal;
 use Illuminate\Http\Request;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class MealsController extends Controller
 {
@@ -38,6 +39,24 @@ class MealsController extends Controller
 
         return response('Showing all the meals', 200);
     }
+
+    public function indexVegetarian(bool $vegetarian)
+    {
+        $meals = Meal::where('is_vegetarian', '=', $vegetarian);
+
+        return response('Showing all the meals', 200);
+
+    }
+    public function indexNonVegetarian(bool $vegetarian)
+    {
+        $meals = Meal::where('is_vegetarian', '=', $vegetarian);
+
+        return response('Showing all the meals', 200);
+
+    }
+
+
+
 
     public function show($id)
     {
