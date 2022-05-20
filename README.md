@@ -34,11 +34,11 @@
 - Flight => Meal (One to one Relationship)
 
 # Requirements
-- Build CRUD for all resources.
+- Build CRUD for all resources. 
 - Write Factories for all resources.
 
 Write tests for below scenarios:
-- Create a meal
+- Create a meal 
 - Get all veg/non-veg meals
 - Create a flight
 - Create an airplane

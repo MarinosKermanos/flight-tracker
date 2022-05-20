@@ -34,6 +34,11 @@ class StoreMeal extends FormRequest
             ],
             'is_vegetarian' => [
                 'required'
+
+            ],
+            'flight_id' => [
+                'required'
+
             ],
         ];
     }
