@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreFlight;
 use App\Models\Flight;
 use Illuminate\Http\Request;
 
 class FlightsController extends Controller
 {
-    public function store(Request $request)
+    public function store(StoreFlight $request)
     {
         Flight::create([
             'airplane_id' => $request->validated('airplane_id'),
