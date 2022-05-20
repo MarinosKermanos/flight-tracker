@@ -16,13 +16,9 @@ class AirplanesController extends Controller
     }
 
     public function update(Request $request, int $id)
-    {// create a form request UpdateAirplane
-        //ta data tha einai required sometimes mesa sto rule method
-        //an to airplane_id pou stelnw iparxi pragmati sto db mas, after validation method documetation
-
+    {// Updates maker
         Airplane::where('id', '=', $id)
             ->update([
-//                'model' => $request->validated('model'),
                 'maker' => $request->input('maker'),
             ]);
         return response('Airplane updated', 204);

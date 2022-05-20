@@ -23,7 +23,6 @@ class MealsController extends Controller
     {// create a form request UpdateMeal
         //ta data tha einai required sometimes mesa sto rule method
         //an to meal_id pou stelnw iparxi pragmati sto db mas, after validation method documetation
-
         Meal::where('id', '=', $id)
             ->update([
 //            'chef_user_id' => $request->validated('chef_user_id'),
@@ -59,6 +58,4 @@ class MealsController extends Controller
     {
         return filter_var($input, FILTER_VALIDATE_BOOL);
     }
-
-
 }
