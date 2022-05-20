@@ -24,13 +24,13 @@ class FlightsController extends Controller
             'actual_duration' => $request->validated('actual_duration'),
         ]);
 
-        return response('Meal created', 201);
+        return response('Flight created', 201);
     }
 
     public function update(Request $request, int $id)
-    {// create a form request UpdateMeal
+    {// create a form request UpdateFlight
         //ta data tha einai required sometimes mesa sto rule method
-        //an to meal_id pou stelnw iparxi pragmati sto db mas, after validation method documetation
+        //an to flight_id pou stelnw iparxi pragmati sto db mas, after validation method documetation
 
         Flight::where('id', '=', $id)
             ->update([
@@ -42,29 +42,29 @@ class FlightsController extends Controller
 //                'expected_duration' => $request->input('expected_duration'),
 //                'actual_duration' => $request->input('actual_duration'),
             ]);
-        return response('Meal updated', 204);
+        return response('Flight updated', 204);
     }
 
     public function index()
     {
-        $meals = Flight::all();
+        $flights = Flight::all();
 
-        return response('Showing all the meals', 200);
+        return response('Showing all the flights', 200);
     }
 
     public function show($id)
     {
-        $meal = Flight::find($id);
+        $flight = Flight::find($id);
 
-        return response('Showing Specific Meal', 200);
+        return response('Showing Specific Flight', 200);
     }
 
     public function destroy(int $id)
     {
-        $meal = Flight::find($id);
-        $meal->delete();
+        $flight = Flight::find($id);
+        $flight->delete();
 
-        return response('Meal deleted', 204);
+        return response('Flight deleted', 204);
     }
 
 
