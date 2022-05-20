@@ -15,7 +15,7 @@
 - code (string)
 
 ### airplanes
-- id (int)  ok
+- id (int)  
 - model (string) // ABC, CDE, TEST1234
 - maker (string) // Boeing, Airbus, etc
 
@@ -46,11 +46,11 @@ Write tests for below scenarios:
 
 # Friday 5/20 To-do's
 Create below routes for each model. Using Meals as an example:
-- GET meals/{id} => show a specific meal by id
-- GET meals => show all meals
-- POST meals => store a new meal
-- PATCH meals/{id}/update => update a specific meal
-- DELETE meals/{id}/delete => delete a specific meal by id
+- GET meals/{id} => show a specific meal by id         
+- GET meals => show all meals                          
+- POST meals => store a new meal                       
+- PATCH meals/{id}/update => update a specific meal    
+- DELETE meals/{id}/delete => delete a specific meal by id  
 
 - GET flights/{id} => show a specific flight by id
 - GET flights => show all flights

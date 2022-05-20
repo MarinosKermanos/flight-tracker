@@ -24,13 +24,13 @@ class MealsController extends Controller
         //an to meal_id pou stelnw iparxi pragmati sto db mas, after validation method documetation
         //
 
-        Meal::where('id','=',$id)
-        ->update([
+        Meal::where('id', '=', $id)
+            ->update([
 //            'chef_user_id' => $request->validated('chef_user_id'),
 //            'name' => $request->validated('name'),
-            'is_vegetarian' => $request->input('is_vegetarian'),
-        ]);
-            return response('Meal updated', 204);
+                'is_vegetarian' => $request->input('is_vegetarian'),
+            ]);
+        return response('Meal updated', 204);
     }
 
     public function index()
@@ -52,7 +52,7 @@ class MealsController extends Controller
         $meal = Meal::find($id);
         $meal->delete();
 
-         return response('Meal deleted', 204);
+        return response('Meal deleted', 204);
     }
 
     private function parseToBool(mixed $input)
