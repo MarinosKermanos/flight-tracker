@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Flight;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,10 @@ class MealFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->name,
+            'is_vegetarian' => $this->faker->boolean,
+            'chef_user_id' => User::factory(),
+            'flight_id' => Flight::factory(),
         ];
     }
 }

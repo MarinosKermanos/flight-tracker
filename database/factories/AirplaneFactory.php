@@ -17,7 +17,8 @@ class AirplaneFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'model' => $this->faker->sentence,
+            'maker' => $this->faker->sentence,
         ];
     }
 }

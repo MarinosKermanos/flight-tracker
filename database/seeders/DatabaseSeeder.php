@@ -16,8 +16,7 @@ class DatabaseSeeder extends Seeder
     public function run()
 
     {
-       // User::truncate(); // removes all rows from a table, but the table structure and its columns,
-                            // constraints, indexes, and so on remain.
+
 
         // \App\Models\User::factory(10)->create();
 
