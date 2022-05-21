@@ -48,17 +48,23 @@ class MealsTest extends TestCase
             'maker' => 'airbus',
         ]);
 
-        $airport = Airport::create([
+        $fromAirport = Airport::create([
             'city' => 'sotira',
             'code' => 'sotira',
+
+        ]);
+
+        $toAirport = Airport::create([
+            'city' => 'liopetri',
+            'code' => 'liopetri',
 
         ]);
 
         $flight = Flight::create([
 
             'airplane_id' => $airplane->id,
-            'From' => 1,
-            'To' => 2,
+            'From' => $fromAirport->id,
+            'To' => $toAirport->id,
             'departure' => now(),
             'arrival' => now(),
             'expected_duration' => 10,
