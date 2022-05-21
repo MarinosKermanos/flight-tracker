@@ -24,8 +24,8 @@ class FlightFactory extends Factory
             'To' => Airport::factory(),
             'departure' => $this->faker->dateTime,
             'arrival' => $this->faker->dateTime,
-            'expected_duration' => $this->faker->time,
-            'actual_duration' => $this->faker->time,
+            'expected_duration' => $this->faker->unixTime,
+            'actual_duration' => $this->faker->unixTime,
         ];
     }
 }
