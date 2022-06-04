@@ -29,9 +29,9 @@ class AirportsController extends Controller
 
     public function index()
     {
-        $airports = Airport::all();
+       return $airports = Airport::all();
 
-        return response('Showing all the airports', 200);
+//        return response('Showing all the airports', 200);
     }
 
     public function show($id)

@@ -90,24 +90,21 @@ class MealsTest extends TestCase
 
     public function test_it_updates_a_meal()
     {
+        $this->withoutExceptionHandling();
+
         $user = User::factory()->create();
 
-        $airport = Airport::create([
-            'city' => 'sotira',
-            'code' => 'sotira',
+        $toAirport = Airport::factory()->create();
 
-        ]);
+        $fromAirport = Airport::factory()->create();
 
-        $airplane = Airplane::create([
-            'model' => 'a320',
-            'maker' => 'airbus',
-        ]);
+        $airplane = Airplane::factory()->create();
 
         $flight = Flight::create([
 
             'airplane_id' => $airplane->id,
-            'From' => 1,
-            'To' => 2,
+            'From' => $toAirport->id,
+            'To' => $fromAirport->id,
             'departure' => now(),
             'arrival' => now(),
             'expected_duration' => 10,
@@ -121,16 +118,13 @@ class MealsTest extends TestCase
             'flight_id' => $flight->id,
         ]);
 
-        $dataToUpdate = ['is_vegetarian' => false];
+        $dataToUpdate = ['chef_user_id' => 1, 'name' => 'fasolaki', 'is_vegetarian' => false];
 
-        $response = $this->post("meals-update/$meal->id", $dataToUpdate);
+        $response = $this->post("meals-update/$meal->id/$flight->id", $dataToUpdate);
 
         $response->assertStatus(204);
 
-        $this->assertDatabaseHas('meals', [
-            'id' => $meal->id,
-            'is_vegetarian' => false,
-        ]);
+        $this->assertDatabaseHas('meals', $dataToUpdate);
 
     }
 
@@ -138,60 +132,22 @@ class MealsTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $fromAirport = Airport::create([
-            'city' => 'sotira',
-            'code' => 'sotira',
-        ]);
+        $toAirport = Airport::factory()->create();
 
-        $toAirport = Airport::create([
-            'city' => 'liopetri',
-            'code' => 'liopetri',
-        ]);
+        $fromAirport = Airport::factory()->create();
 
-        $airplane = Airplane::create([
-            'model' => 'a320',
-            'maker' => 'airbus',
-        ]);
+        $airplane = Airplane::factory()->create();
 
         $flight = Flight::create([
 
             'airplane_id' => $airplane->id,
-            'From' => $fromAirport->id,
-            'To' => $toAirport->id,
+            'From' => $toAirport->id,
+            'To' => $fromAirport->id,
             'departure' => now(),
             'arrival' => now(),
             'expected_duration' => 10,
             'actual_duration' => 11,
         ]);
-
-//        $steak = Meal::create([
-//            'chef_user_id' => $user->id,
-//            'name' => 'steak',
-//            'is_vegetarian' => false,
-//            'flight_id' => $flight->id,
-//        ]);
-
-//        $glitzia = Meal::create([
-//            'chef_user_id' => $user->id,
-//            'name' => 'glitzia',
-//            'is_vegetarian' => false,
-//            'flight_id' => $flight->id,
-//        ]);
-
-//        $poulles = Meal::create([
-//            'chef_user_id' => $user->id,
-//            'name' => 'poulles',
-//            'is_vegetarian' => true,
-//            'flight_id' => $flight->id,
-//        ]);
-//
-//
-//        $aggourka = Meal::create([
-//            'chef_user_id' => $user->id,
-//            'name' => 'aggourka',
-//            'is_vegetarian' => true,
-//            'flight_id' => $flight->id,
-//        ]);
 
         DB::table('meals')->insert([
             [
@@ -220,97 +176,140 @@ class MealsTest extends TestCase
             ]
         ]);
 
-        $vegetarian = true;
-        $response = $this->get("all-veg/$vegetarian");
+        $response = $this->get("all-veg/$flight->id");
         $response->assertStatus(200);
 //        $response->assertJson(function ($json){
 //            return $json->count($json);
 //        });
-
-
     }
 
-//    public function test_get_all_non_vegetarian_meals()
-//    {
-//        $user = User::factory()->create();
-//
-//        $airport = Airport::create([
-//            'city' => 'sotira',
-//            'code' => 'sotira',
-//
-//        ]);
-//
-//        $airplane = Airplane::create([
-//            'model' => 'a320',
-//            'maker' => 'airbus',
-//        ]);
-//
-//        $flight = Flight::create([
-//
-//            'airplane_id' => $airplane->id,
-//            'From' => 1,
-//            'To' => 2,
-//            'departure' => now(),
-//            'arrival' => now(),
-//            'expected_duration' => 10,
-//            'actual_duration' => 11,
-//        ]);
-//
-//        $meal = Meal::create([
-//            'chef_user_id' => $user->id,
-//            'name' => 'steak',
-//            'is_vegetarian' => false,
-//            'flight_id' => $flight->id,
-//        ]);
-//
-//        $meal = Meal::create([
-//            'chef_user_id' => $user->id,
-//            'name' => 'glitzia',
-//            'is_vegetarian' => false,
-//            'flight_id' => $flight->id,
-//        ]);
-//
-//        $meal = Meal::create([
-//            'chef_user_id' => $user->id,
-//            'name' => 'poulles',
-//            'is_vegetarian' => true,
-//            'flight_id' => $flight->id,
-//        ]);
-//
-//
-//        $meal = Meal::create([
-//            'chef_user_id' => $user->id,
-//            'name' => 'aggourka',
-//            'is_vegetarian' => true,
-//            'flight_id' => $flight->id,
-//        ]);
-//
-//        $vegetarian = false;
-//        $response = $this->get("all-veg/$vegetarian"); // giati den trexei otan $vegetarian=gfalse????
-//        $response->assertStatus(200);// erxetai kat efteian stin line 241
-//
-//    }
-
-    public function test_it_deletes_a_meal()
+    public function test_not_get_vegetarian_meals_if_flightId_not_exists()
     {
         $user = User::factory()->create();
 
-        $airport = Airport::create([
-            'city' => 'sotira',
-            'code' => 'sotira',
+        $toAirport = Airport::factory()->create();
 
-        ]);
+        $fromAirport = Airport::factory()->create();
 
-        $airplane = Airplane::create([
-            'model' => 'a320',
-            'maker' => 'airbus',
-        ]);
+        $airplane = Airplane::factory()->create();
 
         $flight = Flight::create([
 
             'airplane_id' => $airplane->id,
-            'From' => 1,
-            'To' => 2,
+            'From' => $toAirport->id,
+            'To' => $fromAirport->id,
+            'departure' => now(),
+            'arrival' => now(),
+            'expected_duration' => 10,
+            'actual_duration' => 11,
+        ]);
+
+        DB::table('meals')->insert([
+            [
+                'chef_user_id' => $user->id,
+                'name' => 'poulles',
+                'is_vegetarian' => true,
+                'flight_id' => $flight->id,
+            ],
+            [
+                'chef_user_id' => $user->id,
+                'name' => 'aggourka',
+                'is_vegetarian' => true,
+                'flight_id' => $flight->id,
+            ],
+            [
+                'chef_user_id' => $user->id,
+                'name' => 'steak',
+                'is_vegetarian' => false,
+                'flight_id' => $flight->id,
+            ],
+            [
+                'chef_user_id' => $user->id,
+                'name' => 'glitzia',
+                'is_vegetarian' => false,
+                'flight_id' => $flight->id,
+            ]
+        ]);
+
+        $flightId=500;
+        $response = $this->get("all-veg/$flightId");
+        $response->assertStatus(404);
+//        $response->assertJson(function ($json){
+//            return $json->count($json);
+//        });
+    }
+
+    public function test_get_all_non_vegetarian_meals()
+    {
+        $this->withoutExceptionHandling();
+
+        $user = User::factory()->create();
+
+        $toAirport = Airport::factory()->create();
+
+        $fromAirport = Airport::factory()->create();
+
+        $airplane = Airplane::factory()->create();
+
+        $flight = Flight::create([
+
+            'airplane_id' => $airplane->id,
+            'From' => $toAirport->id,
+            'To' => $fromAirport->id,
+            'departure' => now(),
+            'arrival' => now(),
+            'expected_duration' => 10,
+            'actual_duration' => 11,
+        ]);
+
+        DB::table('meals')->insert([
+            [
+                'chef_user_id' => $user->id,
+                'name' => 'poulles',
+                'is_vegetarian' => true,
+                'flight_id' => $flight->id,
+            ],
+            [
+                'chef_user_id' => $user->id,
+                'name' => 'aggourka',
+                'is_vegetarian' => true,
+                'flight_id' => $flight->id,
+            ],
+            [
+                'chef_user_id' => $user->id,
+                'name' => 'steak',
+                'is_vegetarian' => false,
+                'flight_id' => $flight->id,
+            ],
+            [
+                'chef_user_id' => $user->id,
+                'name' => 'glitzia',
+                'is_vegetarian' => false,
+                'flight_id' => $flight->id,
+            ]
+        ]);
+
+        $response = $this->get("non-veg/$flight->id");
+        $response->assertStatus(200);
+
+//        $response->assertJson(function ($json){
+//            return $json->count($json);
+//        });
+    }
+
+    public function test_it_deletes_a_meal()
+    {
+        $this->withoutExceptionHandling();
+        $user = User::factory()->create();
+        $toAirport = Airport::factory()->create();
+        $fromAirport = Airport::factory()->create();
+        $airplane = Airplane::factory()->create();
+
+        $flight = Flight::create([
+
+            'airplane_id' => $airplane->id,
+            'From' => $fromAirport->id,
+            'To' => $toAirport->id,
             'departure' => now(),
             'arrival' => now(),
             'expected_duration' => 10,
@@ -323,7 +322,6 @@ class MealsTest extends TestCase
             'is_vegetarian' => true,
             'flight_id' => $flight->id,
         ]);
-
 
         $response = $this->post("meals-delete/$meal->id");
 

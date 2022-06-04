@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreMeal;
+use App\Http\Requests\UpdateMeal;
 use App\Models\Meal;
-use Illuminate\Http\Request;
-use phpDocumentor\Reflection\Types\Boolean;
+use Illuminate\Http\Response;
+use Illuminate\Support\Collection;
 
 class MealsController extends Controller
 {
-    public function store(StoreMeal $request)
+    public function store(StoreMeal $request): Response
     {
         Meal::create([
             'chef_user_id' => $request->validated('chef_user_id'),
@@ -20,50 +21,60 @@ class MealsController extends Controller
         return response('Meal created', 201);
     }
 
-    public function update(Request $request, int $id)
-    {// create a form request UpdateMeal
-        //ta data tha einai required sometimes mesa sto rule method
-        //an to meal_id pou stelnw iparxi pragmati sto db mas, after validation method documetation
-        Meal::where('id', '=', $id)
-            ->update([
-//            'chef_user_id' => $request->validated('chef_user_id'),
-//            'name' => $request->validated('name'),
-                'is_vegetarian' => $request->input('is_vegetarian'),
-            ]);
+    public function update(UpdateMeal $request, int $id, int $flightId): Response
+    {
+//        $x = 21;
+        try {
+            Meal::where('id', '=', $id)
+                ->where('flight_id', $flightId)
+                ->update($request->input());
+        }catch (\Exception $exception){
+            throw new \Exception($exception->getMessage());
+        };
+
+
         return response('Meal updated', 204);
     }
 
-    public function index()
+    public function index(): Response
     {
         $meals = Meal::all();
 
         return response('Showing all the meals', 200);
     }
 
-    public function indexVegetarian(bool $vegetarian)
+    public function indexVegetarian(int $flight_id): Response
     {
-        return Meal::where('is_vegetarian', '=', $vegetarian)->get();
+        var_dump($flight_id);
+        $meals = $this->getMealsByTypeAndFlightId(true, $flight_id);
+        var_dump($meals);
 
-//        $food = 'Vegetarian';
-//        if ($vegetarian == false) {
-//            $food = 'Non Vegetarian';
-//    }
-//
-//return response("Showing all the $food meals", 200);
+        if(!$meals){
+        return response("There is not such a flight Id", 404);
+
+    }
+        return response("Showing all Vegetarian  meals", 200);
+    }
+
+    public function indexNonVegetarian(int $flight_id): Response
+    {
+        $meals = $this->getMealsByTypeAndFlightId(false, $flight_id);
+
+        return response('Showing all non Vegetarian meals', 200);
 
     }
 
-//    public function indexNonVegetarian(bool $vegetarian)
-//    {
-//        $meals = Meal::where('is_vegetarian', '=', $vegetarian);
-//
-//        return response('Showing all the Non Vegetarian meals', 200);
-//
-//    }
+    private function getMealsByTypeAndFlightId(bool $isVegetarian, int $flightId)
+    {
+        $y=$flightId;
+        return Meal::where('flight_id', $flightId)
+            ->where('is_vegetarian', $isVegetarian)
+            ->get()
+            ->toArray();
+    }
 
 
-    public
-    function show($id)
+    public function show($id): Response
     {
         $meal = Meal::find($id);
 
@@ -71,7 +82,7 @@ class MealsController extends Controller
     }
 
     public
-    function destroy(int $id)
+    function destroy(int $id): Response
     {
         $meal = Meal::find($id);
         $meal->delete();
@@ -79,8 +90,7 @@ class MealsController extends Controller
         return response('Meal deleted', 204);
     }
 
-    private
-    function parseToBool(mixed $input)
+    private function parseToBool(mixed $input): bool
     {
         return filter_var($input, FILTER_VALIDATE_BOOL);
     }
