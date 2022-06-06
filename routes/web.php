@@ -44,6 +44,7 @@ Route::post('flights-update/{id}', [FlightsController::class, 'update']);
 Route::delete('flights-delete/{id}', [FlightsController::class, 'destroy']);
 Route::get('flight-no-meal/{id}', [FlightsController::class, 'flightWithNoMeal']);
 Route::get('flights-with-meal', [FlightsController::class, 'getAllFlightsHavingMealAndGetThereMealToo']);
+Route::get('flights-have-meal-drink',[FlightsController::class,'getAllFlightsHavingMealAndDrink']);
 
 //Airplanes
 Route::get('all', [AirplanesController::class, 'index']);

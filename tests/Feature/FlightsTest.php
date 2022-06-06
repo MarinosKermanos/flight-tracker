@@ -2,9 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Http\Controllers\MealsController;
 use App\Models\Airplane;
 use App\Models\Airport;
+use App\Models\Drink;
 use App\Models\Flight;
+use App\Models\Meal;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -144,26 +147,76 @@ class FlightsTest extends TestCase
 
     }
 
-//    public function test_if_flight_has_a_drink(){
-//
-//        $this->withoutExceptionHandling();
-//
-//        $toAirport = Airport::factory()->create();
-//
-//        $fromAirport = Airport::factory()->create();
-//
-//        $airplane = Airplane::factory()->create();
-//
-//        $flight = Flight::create([
-//
-//            'airplane_id' => $airplane->id,
-//            'From' => $toAirport->id,
-//            'To' => $fromAirport->id,
-//            'departure' => now(),
-//            'arrival' => now(),
-//            'expected_duration' => 10,
-//            'actual_duration' => 11,
-//
-//        ]);
-//    }
+    public function test_it_gets_all_flights_having_meal_and_drink()
+    {
+
+
+        $this->withoutExceptionHandling();
+
+        $user1 = User::factory()->create();
+        $user2 = User::factory()->create();
+        $toAirport = Airport::factory()->create();
+        $fromAirport = Airport::factory()->create();
+        $airplane = Airplane::factory()->create();
+        $flight1 = Flight::create([
+            'airplane_id' => $airplane->id,
+            'From' => $toAirport->id,
+            'To' => $fromAirport->id,
+            'departure' => now(),
+            'arrival' => now(),
+            'expected_duration' => 10,
+            'actual_duration' => 11,
+        ]);
+
+        $flight2 = Flight::create([
+            'airplane_id' => $airplane->id,
+            'From' => $toAirport->id,
+            'To' => $fromAirport->id,
+            'departure' => now(),
+            'arrival' => now(),
+            'expected_duration' => 10,
+            'actual_duration' => 11,
+        ]);
+
+        $flight3 = Flight::create([
+            'airplane_id' => $airplane->id,
+            'From' => $toAirport->id,
+            'To' => $fromAirport->id,
+            'departure' => now(),
+            'arrival' => now(),
+            'expected_duration' => 10,
+            'actual_duration' => 11,
+        ]);
+
+
+        $meal1 = Meal::create([
+            'chef_user_id' => $user1->id,
+            'name' => 'patates',
+            'is_vegetarian' => true,
+            'flight_id' => $flight1->id,
+        ]);
+
+        $meal2 = Meal::create([
+            'chef_user_id' => $user2->id,
+            'name' => 'aggouria',
+            'is_vegetarian' => true,
+            'flight_id' => $flight2->id,
+        ]);
+
+        $drink1 = Drink::create([
+            'meal_id' => $meal1->id,
+            'name' => 'beer',
+            'has_alcohol' => true,
+        ]);
+        $drink2 = Drink::create(
+            [
+                'meal_id' => $meal2->id,
+                'name' => 'lemonade',
+                'has_alcohol' => false,
+            ]);
+
+        $response = $this->get("flights-have-meal-drink");
+        $response->assertStatus(200);
+    }
+
 }

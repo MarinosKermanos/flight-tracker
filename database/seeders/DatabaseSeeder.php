@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Airplane;
 use App\Models\Airport;
+use App\Models\Drink;
 use App\Models\Flight;
 use App\Models\Meal;
 use App\Models\User;
@@ -134,7 +135,7 @@ class DatabaseSeeder extends Seeder
         ]);
         $meal3 = Meal::factory()->create([
             'chef_user_id' => $user3->id,
-            'flight_id' => $flight2->id,
+            'flight_id' => $flight3->id,
         ]);
         $meal4 = Meal::factory()->create([
             'chef_user_id' => $user2->id,
@@ -156,22 +157,31 @@ class DatabaseSeeder extends Seeder
             'chef_user_id' => $user3->id,
             'flight_id' => $flight8->id,
         ]);
-        $meal9 = Meal::factory()->create([
-            'chef_user_id' => $user2->id,
-            'flight_id' => $flight8->id,
-        ]);
-        $meal10 = Meal::factory()->create([
-            'chef_user_id' => $user3->id,
-            'flight_id' => $flight10->id,
-        ]);
-        $meal11 = Meal::factory()->create([
-            'chef_user_id' => $user2->id,
-            'flight_id' => $flight10->id,
-        ]);
-        $meal12 = Meal::factory()->create([
-            'chef_user_id' => $user3->id,
-            'flight_id' => $flight10->id,
 
+        $meal9 = Meal::factory()->create([
+            'chef_user_id' => $user3->id,
+            'flight_id' => $flight10->id,
+        ]);
+
+        //7 drinks
+        $drink1= Drink::factory()->create([
+            'meal_id' => $meal1->id,
+        ]);
+
+        $drink2= Drink::factory()->create([
+            'meal_id' => $meal5->id,
+        ]);
+
+        $drink3= Drink::factory()->create([
+            'meal_id' => $meal4->id,
+        ]);
+
+        $drink4= Drink::factory()->create([
+            'meal_id' => $meal3->id,
+        ]);
+
+        $drink5= Drink::factory()->create([
+            'meal_id' => $meal2->id,
         ]);
     }
 

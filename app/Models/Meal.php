@@ -13,11 +13,16 @@ class Meal extends Model
 
     public function chef()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'chef_user_id');
     }
 
     public function flight()
     {
         return $this->belongsTo(Flight::class);
+    }
+
+    public function drink()
+    {
+        return $this->hasOne(Drink::class);
     }
 }

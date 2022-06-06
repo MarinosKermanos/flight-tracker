@@ -65,21 +65,24 @@ class FlightsController extends Controller
         return response('Showing all the flights without meals', 200);
     }
 
-    public function getAllFlightsHavingMealAndGetThereMealToo(){
-
-        $flights= Flight::query()
+    public function getAllFlightsHavingMealAndGetThereMealToo():Response
+    {
+        Flight::query()
             ->has('meal')
             ->with('meal')
             ->get()
             ->toArray();
 
-        var_dump($flights);
-
         return response("Showing all flights offering a meal, and their meal's name ", 200);
+    }
 
+    public function getAllFlightsHavingMealAndDrink(): Response
+    {
+        $flight = Flight::query()
+            ->has('meal.drink')
+            ->get()
+            ->toArray();
 
-
-
-
+        return response("Showing all flights offering meal and drink ", 200);
     }
 }
