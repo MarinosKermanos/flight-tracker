@@ -23,7 +23,6 @@ class MealsController extends Controller
 
     public function update(UpdateMeal $request, int $id, int $flightId): Response
     {
-//        $x = 21;
         try {
             Meal::where('id', '=', $id)
                 ->where('flight_id', $flightId)
@@ -45,7 +44,6 @@ class MealsController extends Controller
 
     public function indexVegetarian(int $flight_id): Response
     {
-//        var_dump($flight_id);
         $meals = $this->getMealsByTypeAndFlightId(true, $flight_id);
         var_dump($meals);
 

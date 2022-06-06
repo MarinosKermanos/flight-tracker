@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreFlight;
 use App\Models\Flight;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class FlightsController extends Controller
 {
@@ -23,7 +24,7 @@ class FlightsController extends Controller
         return response('Flight created', 201);
     }
 
-    public function update(Request $request, int $id)
+    public function update(Request $request, int $id): Response
     {
         Flight::where('id', '=', $id)
             ->update([
@@ -32,21 +33,21 @@ class FlightsController extends Controller
         return response('Flight updated', 204);
     }
 
-    public function index()
+    public function index(): Response
     {
         $flights = Flight::all();
 
         return response('Showing all the flights', 200);
     }
 
-    public function show($id)
+    public function show($id): Response
     {
         $flight = Flight::find($id);
 
         return response('Showing Specific Flight', 200);
     }
 
-    public function destroy(int $id)
+    public function destroy(int $id): Response
     {
         $flight = Flight::find($id);
         $flight->delete();
@@ -54,15 +55,31 @@ class FlightsController extends Controller
         return response('Flight deleted', 204);
     }
 
-    public function FlightWithNoMeal()
+    public function flightWithNoMeal(): Response
     {
-        $x = Flight::query()
+        Flight::query()
             ->doesntHave('meal')
             ->get()
             ->toArray();
 
-        var_dump($x);
-
         return response('Showing all the flights without meals', 200);
+    }
+
+    public function getAllFlightsHavingMealAndGetThereMealToo(){
+
+        $flights= Flight::query()
+            ->has('meal')
+            ->with('meal')
+            ->get()
+            ->toArray();
+
+        var_dump($flights);
+
+        return response("Showing all flights offering a meal, and their meal's name ", 200);
+
+
+
+
+
     }
 }
