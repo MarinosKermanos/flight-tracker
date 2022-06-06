@@ -2,23 +2,22 @@
 
 namespace Tests\Feature;
 
-use App\Http\Controllers\MealsController;
 use App\Models\Airplane;
 use App\Models\Airport;
 use App\Models\Drink;
 use App\Models\Flight;
 use App\Models\Meal;
 use App\Models\User;
-use Database\Seeders\DatabaseSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
 class FlightsTest extends TestCase
 {
-    public function test_it_creates_a_flight()
+    use DatabaseTransactions;
 
+    public function test_it_creates_a_flight()
     {
         $user = User::factory()->create();
 
@@ -149,8 +148,6 @@ class FlightsTest extends TestCase
 
     public function test_it_gets_all_flights_having_meal_and_drink()
     {
-
-
         $this->withoutExceptionHandling();
 
         $user1 = User::factory()->create();
@@ -191,7 +188,7 @@ class FlightsTest extends TestCase
 
         $meal1 = Meal::create([
             'chef_user_id' => $user1->id,
-            'name' => 'patates',
+            'name' => 'kremidia',
             'is_vegetarian' => true,
             'flight_id' => $flight1->id,
         ]);
@@ -216,7 +213,11 @@ class FlightsTest extends TestCase
             ]);
 
         $response = $this->get("flights-have-meal-drink");
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertJson(function (AssertableJson $json) use ($flight1, $flight2) {
+                $this->assertCount(7, $json->toArray());
+            }
+            );
     }
 
 }
