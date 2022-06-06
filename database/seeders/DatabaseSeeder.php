@@ -134,7 +134,7 @@ class DatabaseSeeder extends Seeder
         ]);
         $meal3 = Meal::factory()->create([
             'chef_user_id' => $user3->id,
-            'flight_id' => $flight3->id,
+            'flight_id' => $flight2->id,
         ]);
         $meal4 = Meal::factory()->create([
             'chef_user_id' => $user2->id,
@@ -158,7 +158,7 @@ class DatabaseSeeder extends Seeder
         ]);
         $meal9 = Meal::factory()->create([
             'chef_user_id' => $user2->id,
-            'flight_id' => $flight9->id,
+            'flight_id' => $flight8->id,
         ]);
         $meal10 = Meal::factory()->create([
             'chef_user_id' => $user3->id,
@@ -170,7 +170,7 @@ class DatabaseSeeder extends Seeder
         ]);
         $meal12 = Meal::factory()->create([
             'chef_user_id' => $user3->id,
-            'flight_id' => $flight9->id,
+            'flight_id' => $flight10->id,
 
         ]);
     }

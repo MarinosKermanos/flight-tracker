@@ -42,6 +42,7 @@ Route::get('flights-show/{id}', [FlightsController::class, 'show']);
 Route::post('flights', [FlightsController::class, 'store']);
 Route::post('flights-update/{id}', [FlightsController::class, 'update']);
 Route::delete('flights-delete/{id}', [FlightsController::class, 'destroy']);
+Route::get('flight-no-meal/{id}', [FlightsController::class, 'flightWithNoMeal']);
 
 //Airplanes
 Route::get('all', [AirplanesController::class, 'index']);
@@ -132,7 +133,6 @@ Route::delete('airports-delete/{id}', [AirportsController::class, 'destroy']);
 //echo "<br >";
 //echo "<br >";
 //echo "<br >";
-
 
 //fetch the user with id 3 and all the meals he/she coocked
 //echo User::query()
@@ -270,11 +270,11 @@ Route::delete('airports-delete/{id}', [AirportsController::class, 'destroy']);
 //    ->find(3);
 
 
-//Get flights thay don't have meals    ????????????????
-//echo Flight::query()
-//    ->has('meal')
-//    ->with('meal')
-//    ->get();
+//Get flights thay don't have meals
+//var_dump(Flight::query()
+//    ->doesntHave('meal')
+//    ->get()
+//    ->toArray());
 //Get flights that have veggie meals with their meals
 
 //Get all flights that land in an airport

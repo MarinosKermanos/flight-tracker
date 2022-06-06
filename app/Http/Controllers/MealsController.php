@@ -28,7 +28,7 @@ class MealsController extends Controller
             Meal::where('id', '=', $id)
                 ->where('flight_id', $flightId)
                 ->update($request->input());
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             throw new \Exception($exception->getMessage());
         };
 
@@ -45,14 +45,14 @@ class MealsController extends Controller
 
     public function indexVegetarian(int $flight_id): Response
     {
-        var_dump($flight_id);
+//        var_dump($flight_id);
         $meals = $this->getMealsByTypeAndFlightId(true, $flight_id);
         var_dump($meals);
 
-        if(!$meals){
-        return response("There is not such a flight Id", 404);
+        if (!$meals) {
+            return response("There is not such a flight Id", 404);
 
-    }
+        }
         return response("Showing all Vegetarian  meals", 200);
     }
 
@@ -66,7 +66,6 @@ class MealsController extends Controller
 
     private function getMealsByTypeAndFlightId(bool $isVegetarian, int $flightId)
     {
-        $y=$flightId;
         return Meal::where('flight_id', $flightId)
             ->where('is_vegetarian', $isVegetarian)
             ->get()

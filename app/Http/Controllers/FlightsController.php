@@ -24,11 +24,10 @@ class FlightsController extends Controller
     }
 
     public function update(Request $request, int $id)
-    {// updates arrival
+    {
         Flight::where('id', '=', $id)
             ->update([
                 'arrival' => $request->input('arrival'),
-
             ]);
         return response('Flight updated', 204);
     }
@@ -53,5 +52,17 @@ class FlightsController extends Controller
         $flight->delete();
 
         return response('Flight deleted', 204);
+    }
+
+    public function FlightWithNoMeal()
+    {
+        $x = Flight::query()
+            ->doesntHave('meal')
+            ->get()
+            ->toArray();
+
+        var_dump($x);
+
+        return response('Showing all the flights without meals', 200);
     }
 }
